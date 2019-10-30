@@ -8,15 +8,10 @@ class ClientConnection : public Connection
 		addrinfo hints;
 		addrinfo* result = NULL;
 
-		ClientConnection() {}
-		ClientConnection(ClientConnection const&);
-		void operator=(ClientConnection const&);
-
 		void initializeWinsock();
 		void resolveAddress(string ip);
 		void establishConnection(string ip);
 	public:
-		static ClientConnection& GetInstance();
 		void Open(string ip = "");
 		string Receive();
 		void Send(string msg);

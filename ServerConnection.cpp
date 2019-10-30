@@ -4,16 +4,10 @@
 
 #pragma comment (lib, "Ws2_32.lib")
 
-ServerConnection& ServerConnection::GetInstance()
-{
-	static ServerConnection instance;
-	return instance;
-}
-
-void ServerConnection::Open(string ip)
+void ServerConnection::Open(string port)
 {
 	initializeWinsock();
-	resolveAddress();
+	resolveAddress(port);
 	createListenSocket();
 	setupListenSocket();
 	acceptClientSocket();
@@ -35,9 +29,11 @@ void ServerConnection::initializeWinsock()
 	hints.ai_flags = AI_PASSIVE;
 }
 
-void ServerConnection::resolveAddress()
+void ServerConnection::resolveAddress(string port)
 {
-	const int errCode = getaddrinfo(NULL, DEFAULT_PORT, &hints, &result);
+	char str[7];
+	strcpy_s(str, port.c_str());  
+	const int errCode = getaddrinfo(NULL, str, &hints, &result);
 	if (errCode)
 	{
 		throw Exception("getaddrinfo error : " + to_string(errCode));
@@ -76,7 +72,6 @@ void ServerConnection::acceptClientSocket()
 	connectionSocket = accept(listenSocket, NULL, NULL);
 	if (connectionSocket == INVALID_SOCKET) 
 	{
-		cout << WSAGetLastError();
 		closesocket(listenSocket);
 		throw Exception("accept error: " + to_string(WSAGetLastError()));
 	}

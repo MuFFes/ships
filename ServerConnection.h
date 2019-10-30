@@ -11,18 +11,13 @@ class ServerConnection : public Connection
 		addrinfo hints;
 		addrinfo* result = NULL;
 
-		ServerConnection() {}
-		ServerConnection(ServerConnection const&);
-		void operator=(ServerConnection const&);
-
 		void initializeWinsock();
-		void resolveAddress();
+		void resolveAddress(string port);
 		void createListenSocket();
 		void setupListenSocket();
 		void acceptClientSocket();
 		void closeListenSocket();
 	public:
-		static ServerConnection& GetInstance();
 		void Open(string ip = "");
 		string Receive();
 		void Send(string msg);

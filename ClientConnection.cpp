@@ -4,17 +4,12 @@
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #include <cstdio>
+#include <iostream>
 #include "Exception.h"
 
 #pragma comment (lib, "Ws2_32.lib")
 #pragma comment (lib, "Mswsock.lib")
 #pragma comment (lib, "AdvApi32.lib")
-
-ClientConnection& ClientConnection::GetInstance()
-{
-	static ClientConnection instance;
-	return instance;
-}
 
 void ClientConnection::initializeWinsock()
 {
@@ -31,9 +26,18 @@ void ClientConnection::initializeWinsock()
 
 void ClientConnection::resolveAddress(string ip)
 {
-	char str[16];
+	char str[22], port[6];
 	strcpy_s(str, ip.c_str());
-	const int errCode = getaddrinfo(str, DEFAULT_PORT, &hints, &result);
+	for (int i = 0; i < 30; i++)
+	{
+		if (str[i] == ':')
+		{
+			str[i] = '\0';
+			strcpy_s(port, &str[i + 1]);
+			break;
+		}
+	}
+	const int errCode = getaddrinfo(str, port, &hints, &result);
 	if (errCode != 0) 
 	{
 		throw Exception("getaddrinfo error: " + to_string(errCode));

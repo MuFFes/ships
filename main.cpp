@@ -1,5 +1,6 @@
 #include "Definitions.h"
 #include <cstdio>
+#include <conio.h>
 #include "Exception.h"
 #include "Connection.h"
 #include "ServerConnection.h"
@@ -12,47 +13,51 @@ int main()
 	try
 	{
 		string message;
-		char c = getchar();
+		char c = _getch();
 		if (c == 's')
 		{
-			ServerConnection& connection = ServerConnection::GetInstance();
-			cout << "Waiting for client to connect...";
-			connection.Open();
+			Connection *connection = new ServerConnection();
+			cout << "Enter port to establish connection: ";
+			string port;
+			cin >> port;
+			connection->Open(port);
 			cout << "Client connected!" << endl;
 			while (message != "e")
 			{
 				cout << "Waiting for a message from client..." << endl;
-				message = connection.Receive();
+				message = connection->Receive();
 				cout << "Message from client: " << message << endl;
 				cout << "Type a message to client: ";
 				cin >> message;
-				connection.Send(message);
+				connection->Send(message);
 				cout << "Message sent!" << endl;
 			}
 			cout << "Closing connection!" << endl;
-			connection.Close();
+			connection->Close();
 			cout << "Connection closed!" << endl;
 		}
 		else if (c == 'c')
 		{
-			ClientConnection& connection = ClientConnection::GetInstance();
-			cout << "Connecting to server...";
-			connection.Open("127.0.0.1");
+			ClientConnection *connection = new ClientConnection();
+			cout << "Enter server ip: ";
+			string ip;
+			cin >> ip;
+			connection->Open(ip);
 			cout << "Connected!" << endl;
 
 			while (message != "e")
 			{
 				cout << "Type a message to server: ";
 				cin >> message;
-				connection.Send(message);
+				connection->Send(message);
 				cout << "Message sent: " << message << endl;
 				cout << "Waiting for a message from server: ";
-				message = connection.Receive();
+				message = connection->Receive();
 				cout << "Message from server: ";
 				cout << message << endl;
 			}
 			cout << "Closing connection!" << endl;
-			connection.Close();
+			connection->Close();
 			cout << "Connection closed!" << endl;
 		}
 	}
