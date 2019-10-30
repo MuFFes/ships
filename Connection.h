@@ -17,7 +17,7 @@ class Connection
 		SOCKET connectionSocket = INVALID_SOCKET;
 		bool isOpen = false;
 	public:
-		//virtual void Open() = 0;
+		virtual void Open(string ip = "") = 0;
 		virtual void Send(string msg) = 0;
 		virtual string Receive() = 0;
 		virtual void Close() = 0;

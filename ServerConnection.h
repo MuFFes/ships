@@ -23,7 +23,7 @@ class ServerConnection : public Connection
 		void closeListenSocket();
 	public:
 		static ServerConnection& GetInstance();
-		void Open();
+		void Open(string ip = "");
 		string Receive();
 		void Send(string msg);
 		void Close();

@@ -17,7 +17,7 @@ class ClientConnection : public Connection
 		void establishConnection(string ip);
 	public:
 		static ClientConnection& GetInstance();
-		void Connect(string ip);
+		void Open(string ip = "");
 		string Receive();
 		void Send(string msg);
 		void Close();

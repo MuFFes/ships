@@ -37,7 +37,7 @@ int main()
 		{
 			ClientConnection& connection = ClientConnection::GetInstance();
 			cout << "Connecting to server...";
-			connection.Connect("127.0.0.1");
+			connection.Open("127.0.0.1");
 			cout << "Connected!" << endl;
 
 			while (message != "e")

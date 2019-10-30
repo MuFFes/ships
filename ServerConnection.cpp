@@ -10,7 +10,7 @@ ServerConnection& ServerConnection::GetInstance()
 	return instance;
 }
 
-void ServerConnection::Open()
+void ServerConnection::Open(string ip)
 {
 	initializeWinsock();
 	resolveAddress();
@@ -93,6 +93,7 @@ string ServerConnection::Receive()
 	{
 		throw Exception("Connection is closed!");
 	}
+	ZeroMemory(recvbuf, recvbuflen);
 	const int errCode = recv(connectionSocket, recvbuf, recvbuflen, 0);
 	if (errCode == SOCKET_ERROR) {
 		closesocket(connectionSocket);
@@ -117,6 +118,7 @@ void ServerConnection::Send(string msg)
 		closesocket(connectionSocket);
 		throw Exception("send failed with error: " + to_string(WSAGetLastError()));
 	}
+	ZeroMemory(sendbuf, sendbuflen);
 }
 
 void ServerConnection::Close()

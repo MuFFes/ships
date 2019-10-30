@@ -68,7 +68,7 @@ void ClientConnection::establishConnection(string ip)
 	}
 }
 
-void ClientConnection::Connect(string ip)
+void ClientConnection::Open(string ip)
 {
 	initializeWinsock();
 	resolveAddress(ip);
@@ -77,13 +77,10 @@ void ClientConnection::Connect(string ip)
 
 string ClientConnection::Receive()
 {
+	ZeroMemory(recvbuf, recvbuflen);
 	const int errCode = recv(connectionSocket, recvbuf, recvbuflen, 0);
-	if (errCode > 0)
-		printf("Bytes received: %d\n", errCode);
-	else if (errCode == 0)
-		printf("Connection closed\n");
-	else
-		printf("recv failed with error: %d\n", WSAGetLastError());
+	if (errCode < 0)
+		throw Exception("recv error: " + to_string(WSAGetLastError()));
 	return string(recvbuf);
 }
 
@@ -100,6 +97,7 @@ void ClientConnection::Send(string msg)
 		closesocket(connectionSocket);
 		throw Exception("send error: " + to_string(WSAGetLastError()));\
 	}
+	ZeroMemory(sendbuf, sendbuflen);
 }
 
 void ClientConnection::Close()
