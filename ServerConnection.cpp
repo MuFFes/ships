@@ -45,8 +45,9 @@ void ServerConnection::createListenSocket()
 	listenSocket = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
 	if (listenSocket == INVALID_SOCKET)
 	{
+		int errCode = WSAGetLastError();
 		freeaddrinfo(result);
-		throw Exception("socket error: " + to_string(WSAGetLastError()));
+		throw Exception("socket error: " + to_string(errCode));
 	}
 }
 
@@ -56,14 +57,16 @@ void ServerConnection::setupListenSocket()
 	freeaddrinfo(result);
 	
 	if (errCode == SOCKET_ERROR) {
+		errCode = WSAGetLastError();
 		closesocket(listenSocket);
-		throw Exception("bind error: " + to_string(WSAGetLastError()));
+		throw Exception("bind error: " + to_string(errCode));
 	}
 
 	errCode = listen(listenSocket, SOMAXCONN);
 	if (errCode == SOCKET_ERROR) {
+		errCode = WSAGetLastError();
 		closesocket(listenSocket);
-		throw Exception("listen error: " + to_string(WSAGetLastError()));
+		throw Exception("listen error: " + to_string(errCode));
 	}
 }
 
@@ -72,8 +75,9 @@ void ServerConnection::acceptClientSocket()
 	connectionSocket = accept(listenSocket, NULL, NULL);
 	if (connectionSocket == INVALID_SOCKET) 
 	{
+		int errCode = WSAGetLastError();
 		closesocket(listenSocket);
-		throw Exception("accept error: " + to_string(WSAGetLastError()));
+		throw Exception("accept error: " + to_string(errCode));
 	}
 }
 
@@ -89,10 +93,11 @@ string ServerConnection::Receive()
 		throw Exception("Connection is closed!");
 	}
 	ZeroMemory(recvbuf, recvbuflen);
-	const int errCode = recv(connectionSocket, recvbuf, recvbuflen, 0);
+	int errCode = recv(connectionSocket, recvbuf, recvbuflen, 0);
 	if (errCode == SOCKET_ERROR) {
+		errCode = WSAGetLastError();
 		closesocket(connectionSocket);
-		throw Exception("recv error: " + to_string(WSAGetLastError()));
+		throw Exception("recv error: " + to_string(errCode));
 	}
 	return string(recvbuf);
 }
@@ -108,22 +113,25 @@ void ServerConnection::Send(string msg)
 		throw Exception("String: '" + msg + "' is too long to be sent!");
 	}
 	strcpy_s(sendbuf, msg.c_str());
-	const int errCode = send(connectionSocket, sendbuf, sendbuflen, 0);
+	int errCode = send(connectionSocket, sendbuf, sendbuflen, 0);
 	if (errCode == SOCKET_ERROR) {
+		errCode = WSAGetLastError();
 		closesocket(connectionSocket);
-		throw Exception("send failed with error: " + to_string(WSAGetLastError()));
+		throw Exception("send failed with error: " + to_string(errCode));
 	}
 	ZeroMemory(sendbuf, sendbuflen);
 }
 
 void ServerConnection::Close()
 {
-	const int errCode = shutdown(connectionSocket, SD_SEND);
-	closesocket(connectionSocket);
+	int errCode = shutdown(connectionSocket, SD_SEND);
 	if (errCode == SOCKET_ERROR) 
 	{
-		throw Exception("shutdown error: " + to_string(WSAGetLastError()));
+		errCode = WSAGetLastError();
+		closesocket(connectionSocket);
+		throw Exception("shutdown error: " + to_string(errCode));
 	}
+	closesocket(connectionSocket);
 	WSACleanup();
 	isOpen = false;
 }

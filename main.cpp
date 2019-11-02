@@ -7,34 +7,26 @@
 #include <iostream>
 #include <ws2tcpip.h>
 #include "ClientConnection.h"
+#include <limits>
+#include "Game.h"
 
 int main() 
 {
 	try
 	{
-		string message;
+		Game *game = NULL;
+		
 		char c = _getch();
 		if (c == 's')
 		{
-			Connection *connection = new ServerConnection();
+			ServerConnection *connection = new ServerConnection();
 			cout << "Enter port to establish connection: ";
 			string port;
 			cin >> port;
 			connection->Open(port);
 			cout << "Client connected!" << endl;
-			while (message != "e")
-			{
-				cout << "Waiting for a message from client..." << endl;
-				message = connection->Receive();
-				cout << "Message from client: " << message << endl;
-				cout << "Type a message to client: ";
-				cin >> message;
-				connection->Send(message);
-				cout << "Message sent!" << endl;
-			}
-			cout << "Closing connection!" << endl;
-			connection->Close();
-			cout << "Connection closed!" << endl;
+			
+			game = new Game(connection);
 		}
 		else if (c == 'c')
 		{
@@ -45,21 +37,9 @@ int main()
 			connection->Open(ip);
 			cout << "Connected!" << endl;
 
-			while (message != "e")
-			{
-				cout << "Type a message to server: ";
-				cin >> message;
-				connection->Send(message);
-				cout << "Message sent: " << message << endl;
-				cout << "Waiting for a message from server: ";
-				message = connection->Receive();
-				cout << "Message from server: ";
-				cout << message << endl;
-			}
-			cout << "Closing connection!" << endl;
-			connection->Close();
-			cout << "Connection closed!" << endl;
+			game = new Game(connection);
 		}
+		game->draw();
 	}
 	catch (Exception &ex)
 	{
@@ -67,6 +47,6 @@ int main()
 		WSACleanup();
 		return 1;
 	}
-	char c = getchar();
+	_getch();
     return 0;
 }

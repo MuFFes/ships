@@ -125,6 +125,7 @@
   <ItemGroup>
     <ClCompile Include="ClientConnection.cpp" />
     <ClCompile Include="Exception.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ServerConnection.cpp" />
   </ItemGroup>
@@ -133,6 +134,7 @@
     <ClInclude Include="Connection.h" />
     <ClInclude Include="Definitions.h" />
     <ClInclude Include="Exception.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="ServerConnection.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

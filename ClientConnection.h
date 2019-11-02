@@ -12,7 +12,7 @@ class ClientConnection : public Connection
 		void resolveAddress(string ip);
 		void establishConnection(string ip);
 	public:
-		void Open(string ip = "");
+		void Open(string ip);
 		string Receive();
 		void Send(string msg);
 		void Close();

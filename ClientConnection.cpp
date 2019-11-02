@@ -95,22 +95,24 @@ void ClientConnection::Send(string msg)
 		throw Exception("String: '" + msg + "' is too long to be sent!");
 	}
 	strcpy_s(sendbuf, msg.c_str());
-	const int errCode = send(connectionSocket, sendbuf, (int)strlen(sendbuf), 0);
+	int errCode = send(connectionSocket, sendbuf, (int)strlen(sendbuf), 0);
 	if (errCode == SOCKET_ERROR) 
 	{
+		errCode = WSAGetLastError();
 		closesocket(connectionSocket);
-		throw Exception("send error: " + to_string(WSAGetLastError()));\
+		throw Exception("send error: " + to_string(errCode));
 	}
 	ZeroMemory(sendbuf, sendbuflen);
 }
 
 void ClientConnection::Close()
 {
-	const int errCode = shutdown(connectionSocket, SD_SEND);
+	int errCode = shutdown(connectionSocket, SD_SEND);
 	if (errCode == SOCKET_ERROR)
 	{
+		errCode = WSAGetLastError();
 		closesocket(connectionSocket);
-		throw Exception("shutdown error: " + to_string(WSAGetLastError()));
+		throw Exception("shutdown error: " + to_string(errCode));
 	}
 	closesocket(connectionSocket);
 	WSACleanup();
