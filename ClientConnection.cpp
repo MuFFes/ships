@@ -4,7 +4,6 @@
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #include <cstdio>
-#include <iostream>
 #include "Exception.h"
 
 #pragma comment (lib, "Ws2_32.lib")
@@ -46,8 +45,7 @@ void ClientConnection::resolveAddress(string ip)
 
 void ClientConnection::establishConnection(string ip)
 {
-	addrinfo* ptr;
-	for (ptr = result; ptr != NULL; ptr = ptr->ai_next) 
+	for (addrinfo* ptr = result; ptr != NULL; ptr = ptr->ai_next)
 	{
 		connectionSocket = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
 		if (connectionSocket == INVALID_SOCKET) 

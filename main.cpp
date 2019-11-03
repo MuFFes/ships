@@ -39,7 +39,6 @@ int main()
 
 			game = new Game(connection);
 		}
-		game->draw();
 	}
 	catch (Exception &ex)
 	{
