@@ -5,12 +5,12 @@ void Game::start()
 {
 	hasStarted = 0;
 	hasEnded = 0;
-	clearFields();
-	setupFields();
-	//while (!hasEnded)
-	//{
-	//	step();
-	//}
+	//clearFields();
+	//setupFields();
+	while (!hasEnded)
+	{
+		step();
+	}
 }
 
 Game::Game(Connection *connection)
@@ -38,12 +38,12 @@ void Game::draw()
 		cout << endl << "     " << (char)(i + 64) << " | ";
 		for (int j = 0; j < 10; j++)
 		{
-			cout << myField[i - 1][j] << " ";
+			cout << myField.GetState(Point(i - 1, j)) << " ";
 		}
 		cout << "\t\t" << "      " << (char)(i + 64) << " | ";
 		for (int j = 0; j < 10; j++)
 		{
-			cout << enemyField[i - 1][j] << " ";
+			cout << enemyField.GetState(Point(i - 1, j)) << " ";
 		}
 	}
 	cout << endl << endl;
@@ -56,14 +56,7 @@ Game::~Game()
 
 void Game::clearFields()
 {
-	for (int i = 0; i < 10; i++)
-	{
-		for (int j = 0; j < 10; j++)
-		{
-			myField[i][j] = '.';
-			enemyField[i][j] = '.';
-		}
-	}
+	
 }
 
 void Game::setupFields()

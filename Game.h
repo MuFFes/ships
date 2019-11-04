@@ -1,7 +1,6 @@
 #pragma once
 #include "Connection.h"
-#include "ClientConnection.h"
-#include "ServerConnection.h"
+#include "Field.h"
 
 class Game
 {
@@ -12,8 +11,8 @@ class Game
 		int hasStarted = 0;
 		int listOfShips[10] = { 4, 3, 3, 2, 2, 2, 1, 1, 1, 1 };
 		Connection* connection = NULL;
-		char myField[10][10];
-		char enemyField[10][10];
+		Field myField;
+		Field enemyField;
 		void clearFields();
 		void setupFields();
 		void step();

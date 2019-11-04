@@ -37,7 +37,6 @@ int main()
 				connection = new ClientConnection();
 				cout << "Enter server ip: ";
 				cin >> ip;
-				throw Exception("asdasdas");
 			}
 
 			connection->Open(ip);
