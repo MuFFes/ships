@@ -17,3 +17,4 @@ class ClientConnection : public Connection
 		void Send(string msg);
 		void Close();
 };
+

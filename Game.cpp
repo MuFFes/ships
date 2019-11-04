@@ -1,6 +1,5 @@
 ﻿#include "Game.h"
 #include <iostream>
-#include <conio.h>
 
 void Game::start()
 {
@@ -14,17 +13,9 @@ void Game::start()
 	//}
 }
 
-Game::Game(ServerConnection *connection)
+Game::Game(Connection *connection)
 {
 	this->connection = connection;
-	isServer = true;
-	start();
-}
-
-Game::Game(ClientConnection *connection)
-{
-	this->connection = connection;
-	isServer = false;
 	start();
 }
 
@@ -40,7 +31,7 @@ void Game::draw()
 	for (int i = 0; i < 10; i++)
 	{
 		cout << " " << i;
-	}
+	};;
 	cout << endl << "       |--------------------\t\t\t|--------------------";
 	for (int i = 1; i <= 10; i++)
 	{
@@ -79,7 +70,7 @@ void Game::setupFields()
 {
 	const int numOfShips = sizeof(listOfShips) / sizeof(listOfShips[0]);
 	int orientation = 0;
-	for (int i = 0; i < numOfShips; i++)
+	/*for (int i = 0; i < numOfShips; i++)
 	{
 		draw();
 		
@@ -108,12 +99,12 @@ void Game::setupFields()
 			cout << "Enter correct coordinates:" << endl;
 			cin >> s;
 		} 
-	}
+	}*/
 	cout << "Waiting for another player to finish setting up his ships...";
-	connection->Send("1");
-	connection->Receive();
+	string msg = "1";
+	connection << msg;
+	connection >> msg;
 }
-
 
 void Game::step()
 {

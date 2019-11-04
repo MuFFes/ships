@@ -21,4 +21,7 @@ class Connection
 		virtual void Send(string msg) = 0;
 		virtual string Receive() = 0;
 		virtual void Close() = 0;
+
+		friend void operator>>(Connection* const& connection, string& msg);
+		friend void operator<<(Connection* const& connection, const string& msg);
 };

@@ -75,6 +75,7 @@ void ClientConnection::Open(string ip)
 	initializeWinsock();
 	resolveAddress(ip);
 	establishConnection(ip);
+	isOpen = true;
 }
 
 string ClientConnection::Receive()
