@@ -7,6 +7,7 @@
 #include <ws2tcpip.h>
 #include "ClientConnection.h"
 #include "Game.h"
+#include <ctime>
 
 int main() 
 {
@@ -18,7 +19,6 @@ int main()
 			Connection* connection = NULL;
 			string ip;
 			char c;
-
 			cout << "Press 'S' to start a server, or 'J' to join existing one!" << endl;
 
 			do
@@ -43,7 +43,7 @@ int main()
 			cout << "Connected!" << endl;
 			game = new Game(connection);
 		}
-		catch (Exception & ex)
+		catch (Exception &ex)
 		{
 			cout << ex.what() << endl;
 			WSACleanup();

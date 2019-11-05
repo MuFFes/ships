@@ -1,22 +1,29 @@
 ﻿#include "Game.h"
 #include <iostream>
 #include <conio.h>
+#include <random>
 
 void Game::start()
 {
 	hasStarted = 0;
 	hasEnded = 0;
-	//clearFields();
 	setupFields();
-	while (!hasEnded)
-	{
-		step();
-	}
+	//while (!hasEnded)
+	//{
+	//	step();
+	//}
 }
 
 Game::Game(Connection *connection)
 {
 	this->connection = connection;
+	
+	random_device rd;
+	mt19937 gen(rd());
+	uniform_int_distribution<int> dis(0, INT_MAX);
+	
+	this->priority = dis(gen);
+	
 	start();
 }
 
@@ -55,50 +62,78 @@ Game::~Game()
 	connection->Close();
 }
 
-void Game::clearFields()
-{
-	
-}
-
 void Game::setupFields()
 {
 	const int numOfShips = sizeof(listOfShips) / sizeof(listOfShips[0]);
-	int orientation = 0;
 	for (int i = 0; i < numOfShips; i++)
 	{
 		draw();
-		
-		if (listOfShips[i] > 1)
-		{
-			cout << "Choose orientation of " << listOfShips[i] << "-tiled ship (h-horizontally, v-vertically): ";
-			char c = _getch();
-			while (c != 'h' && c != 'H' && c != 'v' && c != 'V')
-			{
-				c = _getch();
-			}
-			if (c == 'h' || c == 'H')
-				orientation = 0;
-			else
-				orientation = 1;
-			cout << c << endl;
-		}
 
-		cout << "Select first tile to place " << listOfShips[i] << "-tiled ship on: ";
-		string s;
-		cin >> s;
-		while (s.length() != 2 || 
-			(s[1] < 48 || s[1] > 57) && (s[1] < 65 || s[1] > 74) && (s[1] < 97 || s[1] > 106) ||
-			(s[0] < 48 || s[0] > 57) && (s[0] < 65 || s[0] > 74) && (s[0] < 97 || s[0] > 106))
+		int x = 0;
+		int y = 0;
+		int orientation = 0;
+
+		do
 		{
-			cout << "Enter correct coordinates:" << endl;
-			cin >> s;
-		}
-		myField.AddShip(new Ship(Point(1, 1), 4, 1));
+			if (listOfShips[i] > 1)
+			{
+				cout << "Choose orientation of " << listOfShips[i] << "-tiled ship (h-horizontal, v-vertical): ";
+				char c = _getch();
+				while (c != 'h' && c != 'H' && c != 'v' && c != 'V')
+				{
+					c = _getch();
+				}
+				cout << c << endl;
+				if (c == 'h' || c == 'H')
+					orientation = 0;
+				else
+					orientation = 1;
+			}
+
+			cout << "Select first tile to place " << listOfShips[i] << "-tiled ship on: ";
+			string s;
+			bool correctData = false;
+			do
+			{
+				cin >> s;
+				if (s.length() != 2)
+				{
+					continue;
+				}
+				if (s[0] >= 48 && s[0] <= 57)
+				{
+					if ((s[1] < 65 || s[1] > 74) && (s[1] < 97 || s[1] > 106))
+					{
+						continue;
+					}
+					y = s[1] - 65;
+					x = s[0] - 48;
+				}
+				else if ((s[0] >= 65 && s[0] <= 74) || (s[0] >= 97 && s[0] <= 106))
+				{
+					if (s[1] < 48 || s[1] > 57)
+					{
+						continue;
+					}
+					y = s[0] - 65;
+					x = s[1] - 48;
+				}
+				if (y > 9) y -= 32;
+				correctData = true;
+			} while (cout << "Enter correct coordinates:" << endl, !correctData);
+			
+		} while (cout << "Ships cannot overlap and touch each other!" << endl,
+			!myField.AddShip(new Ship(Point(x, y), listOfShips[i], orientation)));
 	}
-	cout << "Waiting for another player to finish setting up his ships...";
-	string msg = "1";
-	connection << msg;
-	connection >> msg;
+	draw();
+	cout << "Waiting for another player to finish setting up his ships..." << endl;
+	cout << "Priority: " << priority << endl;
+	string tmp;
+	connection << to_string(priority);
+	connection >> tmp;
+	enemyPriority = stoi(tmp);
+	cout << "Enemy priority: " << enemyPriority << endl;
+
 }
 
 void Game::step()
