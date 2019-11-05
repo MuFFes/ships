@@ -1,12 +1,13 @@
 ﻿#include "Game.h"
 #include <iostream>
+#include <conio.h>
 
 void Game::start()
 {
 	hasStarted = 0;
 	hasEnded = 0;
 	//clearFields();
-	//setupFields();
+	setupFields();
 	while (!hasEnded)
 	{
 		step();
@@ -22,7 +23,7 @@ Game::Game(Connection *connection)
 void Game::draw()
 {
 	system("cls");
-	cout << "\t     Your field: \t\t\t      Enemy field:" << endl << "\t";
+	cout << endl << "\t     Your field: \t\t\t      Enemy field:" << endl << "\t";
 	for (int i = 0; i < 10; i++)
 	{
 		cout << " " << i;
@@ -38,12 +39,12 @@ void Game::draw()
 		cout << endl << "     " << (char)(i + 64) << " | ";
 		for (int j = 0; j < 10; j++)
 		{
-			cout << myField.GetState(Point(i - 1, j)) << " ";
+			cout << myField.GetState(Point(j, i - 1)) << " ";
 		}
 		cout << "\t\t" << "      " << (char)(i + 64) << " | ";
 		for (int j = 0; j < 10; j++)
 		{
-			cout << enemyField.GetState(Point(i - 1, j)) << " ";
+			cout << enemyField.GetState(Point(j, i - 1)) << " ";
 		}
 	}
 	cout << endl << endl;
@@ -63,7 +64,7 @@ void Game::setupFields()
 {
 	const int numOfShips = sizeof(listOfShips) / sizeof(listOfShips[0]);
 	int orientation = 0;
-	/*for (int i = 0; i < numOfShips; i++)
+	for (int i = 0; i < numOfShips; i++)
 	{
 		draw();
 		
@@ -91,8 +92,9 @@ void Game::setupFields()
 		{
 			cout << "Enter correct coordinates:" << endl;
 			cin >> s;
-		} 
-	}*/
+		}
+		myField.AddShip(new Ship(Point(1, 1), 4, 1));
+	}
 	cout << "Waiting for another player to finish setting up his ships...";
 	string msg = "1";
 	connection << msg;

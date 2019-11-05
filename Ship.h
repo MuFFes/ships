@@ -1,12 +1,10 @@
 #pragma once
 #include "Point.h"
+#include <list>
 
 class Ship
 {
 	public:
-		Ship(Point start = Point(), int length = 0, int direction = 0);
-		const Point start;
-		const int length;
-		const int direction;
+		std::list<Point> Tiles;
+		Ship(Point start, int length, int orientation);
 };
-
