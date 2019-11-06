@@ -20,6 +20,8 @@ class Game
 		void step();
 		void draw();
 		void start();
+		static bool validateCoordinatesInput(string coordinates);
+		void standarizeCoordinatesInput(int* x, int* y);
 	public:
 		Game(Connection *connection);
 		void End();

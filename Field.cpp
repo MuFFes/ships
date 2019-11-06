@@ -2,8 +2,7 @@
 
 Field::Field()
 {
-	missedShots = new Point[100];
-	hitShots = new Point[100];
+
 }
 
 bool Field::AddShip(Ship* ship)
@@ -28,15 +27,30 @@ bool Field::AddShip(Ship* ship)
 	return true;
 }
 
+void Field::Shoot(Point point)
+{
+	if (GetState(point) == 'X')
+	{
+		hitShots.push_back(point);
+	}
+	else
+	{
+		missedShots.push_back(point);
+	}
+}
+
 char Field::GetState(Point point)
 {
-	for (int i = 0; i < 100; i++)
+	for (list<Point>::iterator i = missedShots.begin(); i != missedShots.end(); ++i)
 	{
-		if (missedShots[i].x == point.x && missedShots[i].y == point.y)
+		if (i->x == point.x && i->y == point.y)
 		{
 			return 'o';
 		}
-		if (hitShots[i].x == point.x && hitShots[i].y == point.y)
+	}
+	for (list<Point>::iterator i = hitShots.begin(); i != hitShots.end(); ++i)
+	{
+		if (i->x == point.x && i->y == point.y)
 		{
 			return '*';
 		}

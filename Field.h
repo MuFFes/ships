@@ -9,14 +9,15 @@ using namespace std;
 class Field
 {
 	private:
-		Point *missedShots;
-		Point *hitShots;
+		list<Point> missedShots;
+		list<Point> hitShots;
 		list<Ship> ships;
 	public:
 		Field();
 		bool AddShip(Ship* ship);
-		void RemoveShip(Ship& ship);
-		Ship FindShip(Point point);
+		//void RemoveShip(Ship& ship);
+		//Ship FindShip(Point point);
+		void Shoot(Point point);
 		char GetState(Point point);
 };
 
