@@ -7,8 +7,9 @@ void GameHelper::StandardizeCoordinatesInput(int* x, int* y)
 {
 	if (*y < *x)
 	{
-		swap(x, y);
+		swap(*x, *y);
 	}
 	while (*y > 10) *y -= 16;
 	while (*x > 10) *x -= 16;
+	*y -= 1;
 }

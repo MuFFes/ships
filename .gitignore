@@ -1,4 +1,7 @@
 .vs/
-Debug/
-Release/
-x64/
+/Debug/
+/Release/
+/x64/
+/Ships/Debug/
+/Ships/Release/
+/Ships/x64/

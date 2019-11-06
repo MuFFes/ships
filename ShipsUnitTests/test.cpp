@@ -1,22 +1,10 @@
 #include "pch.h"
 #include "../Ships/GameHelper.h"
 
-//class MockConnection : public Connection
-//{
-//	public:
-//		MOCK_METHOD1(Open, void(string));
-//		MOCK_METHOD0(Close, void(void));
-//};
 
 struct GameHelperTest : testing::Test
 {
-	//MockConnection connection;
-	//Game* game;
 	GameHelper helper;
-
-	//GameHelperTest()
-	//{
-	//}
 };
 
 struct StandardizeCoordinatesInputTestCase
@@ -50,7 +38,9 @@ INSTANTIATE_TEST_CASE_P(Default, StandardizeCoordinatesInputTest,
 		StandardizeCoordinatesInputTestCase{ 'A', '0', 0, 0 },
 		StandardizeCoordinatesInputTestCase{ '0', 'A', 0, 0 },
 		StandardizeCoordinatesInputTestCase{ 'J', '9', 9, 9 },
-		StandardizeCoordinatesInputTestCase{ '9', 'J', 9, 9 }
+		StandardizeCoordinatesInputTestCase{ '9', 'J', 9, 9 },
+		StandardizeCoordinatesInputTestCase{ 'C', '7', 7, 2 },
+		StandardizeCoordinatesInputTestCase{ '7', 'C', 7, 2 }
 ));
 
 TEST(TestCaseName, TestName) {

@@ -47,16 +47,6 @@ bool Game::validateCoordinatesInput(string coordinates)
 	return true;
 }
 
-void Game::standarizeCoordinatesInput(int *x, int *y)
-{
-	if (*y < *x)
-	{
-		swap(x, y);
-	}
-	while (*y > 10) *y -= 16;
-	while (*x > 10) *x -= 16;
-}
-
 Game::Game(Connection *connection)
 {
 	this->connection = connection;
@@ -143,10 +133,10 @@ void Game::setupFields()
 			} while (cout << "Enter correct coordinates:" << endl, !correctData);
 			x = s[0];
 			y = s[1];
-			standarizeCoordinatesInput(&x, &y);
+			helper.StandardizeCoordinatesInput(&x, &y);
 			
 		} while (cout << "Ships cannot overlap and touch each other!" << endl,
-			!myField.AddShip(new Ship(Point(x, y - 1), listOfShips[i], orientation)));
+			!myField.AddShip(new Ship(Point(x, y), listOfShips[i], orientation)));
 	}
 	draw();
 	cout << "Waiting for another player to finish setting up his ships..." << endl;
@@ -169,7 +159,7 @@ void Game::step()
 			{
 				x = msg[0];
 				y = msg[1];
-				standarizeCoordinatesInput(&x, &y);
+				helper.StandardizeCoordinatesInput(&x, &y);
 			}
 			if (enemyField.GetState(Point(x, y)) != '.')
 			{
@@ -187,7 +177,6 @@ void Game::step()
 		{
 			x = msg[0];
 			y = msg[1];
-			standarizeCoordinatesInput(&x, &y);
 			myField.Shoot(Point(x, y));
 		}
 		else throw Exception("Error receiving data from connection!");

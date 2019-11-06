@@ -1,6 +1,7 @@
 #pragma once
 #include "Connection.h"
 #include "Field.h"
+#include "GameHelper.h"
 
 class Game
 {
@@ -21,7 +22,7 @@ class Game
 		void draw();
 		void start();
 		static bool validateCoordinatesInput(string coordinates);
-		void standarizeCoordinatesInput(int* x, int* y);
+		GameHelper helper;
 	public:
 		Game(Connection *connection);
 		void End();
