@@ -42,6 +42,7 @@ int main()
 			connection->Open(ip);
 			cout << "Connected!" << endl;
 			game = new Game(connection);
+			game->Start();
 		}
 		catch (Exception &ex)
 		{

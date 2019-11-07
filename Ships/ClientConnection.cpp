@@ -3,7 +3,6 @@
 #include <windows.h>
 #include <winsock2.h>
 #include <ws2tcpip.h>
-#include <cstdio>
 #include "Exception.h"
 
 #pragma comment (lib, "Ws2_32.lib")
@@ -76,32 +75,6 @@ void ClientConnection::Open(string ip)
 	resolveAddress(ip);
 	establishConnection(ip);
 	isOpen = true;
-}
-
-string ClientConnection::Receive()
-{
-	ZeroMemory(recvbuf, recvbuflen);
-	const int errCode = recv(connectionSocket, recvbuf, recvbuflen, 0);
-	if (errCode < 0)
-		throw Exception("recv error: " + to_string(WSAGetLastError()));
-	return string(recvbuf);
-}
-
-void ClientConnection::Send(string msg)
-{
-	if (msg.length() + 1 > DEFAULT_BUFLEN)
-	{
-		throw Exception("String: '" + msg + "' is too long to be sent!");
-	}
-	strcpy_s(sendbuf, msg.c_str());
-	int errCode = send(connectionSocket, sendbuf, (int)strlen(sendbuf), 0);
-	if (errCode == SOCKET_ERROR) 
-	{
-		errCode = WSAGetLastError();
-		closesocket(connectionSocket);
-		throw Exception("send error: " + to_string(errCode));
-	}
-	ZeroMemory(sendbuf, sendbuflen);
 }
 
 void ClientConnection::Close()

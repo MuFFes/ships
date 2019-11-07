@@ -3,8 +3,9 @@
 #include <conio.h>
 #include <random>
 #include "Exception.h"
+#include "GameHelper.h"
 
-void Game::start()
+void Game::Start()
 {
 	hasStarted = 0;
 	hasEnded = 0;
@@ -33,8 +34,6 @@ Game::Game(Connection *connection)
 	uniform_int_distribution<int> dis(0, INT_MAX);
 	
 	this->priority = dis(gen);
-	
-	start();
 }
 
 void Game::draw()

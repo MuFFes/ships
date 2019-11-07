@@ -86,42 +86,6 @@ void ServerConnection::closeListenSocket()
 	closesocket(listenSocket);
 }
 
-string ServerConnection::Receive()
-{
-	if (!isOpen)
-	{
-		throw Exception("Connection is closed!");
-	}
-	ZeroMemory(recvbuf, recvbuflen);
-	int errCode = recv(connectionSocket, recvbuf, recvbuflen, 0);
-	if (errCode == SOCKET_ERROR) {
-		errCode = WSAGetLastError();
-		closesocket(connectionSocket);
-		throw Exception("recv error: " + to_string(errCode));
-	}
-	return string(recvbuf);
-}
-
-void ServerConnection::Send(string msg)
-{
-	if (!isOpen)
-	{
-		throw Exception("Connection is closed!");
-	}
-	if (msg.length() + 1 > DEFAULT_BUFLEN)
-	{
-		throw Exception("String: '" + msg + "' is too long to be sent!");
-	}
-	strcpy_s(sendbuf, msg.c_str());
-	int errCode = send(connectionSocket, sendbuf, sendbuflen, 0);
-	if (errCode == SOCKET_ERROR) {
-		errCode = WSAGetLastError();
-		closesocket(connectionSocket);
-		throw Exception("send failed with error: " + to_string(errCode));
-	}
-	ZeroMemory(sendbuf, sendbuflen);
-}
-
 void ServerConnection::Close()
 {
 	int errCode = shutdown(connectionSocket, SD_SEND);

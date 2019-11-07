@@ -1,7 +1,5 @@
 #pragma once
 #include <string>
-#include "Connection.h"
-#include "Field.h"
 
 class GameHelper
 {

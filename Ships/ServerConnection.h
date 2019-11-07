@@ -19,7 +19,5 @@ class ServerConnection : public Connection
 		void closeListenSocket();
 	public:
 		void Open(string ip);
-		string Receive();
-		void Send(string msg);
 		void Close();
 };

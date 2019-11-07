@@ -1,12 +1,10 @@
 #pragma once
 #include "Connection.h"
 #include "Field.h"
-#include "GameHelper.h"
 
 class Game
 {
 	private:
-		Game();
 		int hasEnded = 0;
 		int roundNo = 0;
 		int hasStarted = 0;
@@ -18,13 +16,12 @@ class Game
 		Field enemyField;
 		void shoot();
 		void waitForShot();
-		void clearFields();
 		void setupFields();
 		void step();
 		void draw();
-		void start();
 	public:
 		Game(Connection *connection);
 		void End();
+		void Start();
 		~Game();
 };
