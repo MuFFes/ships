@@ -32,8 +32,26 @@ INSTANTIATE_TEST_CASE_P(LengthTest, ValidateCoordinatesInputTest,
 		ValidateCoordinatesInputTestCase{ "A1", true }
 ));
 
-//INSTANTIATE_TEST_CASE_P(SampleValuesTest, ValidateCoordinatesInputTest,
-//	testing::Values(
-//		ValidateCoordinatesInputTestCase{ 'C', '7', 7, 2 },
-//		ValidateCoordinatesInputTestCase{ '7', 'C', 7, 2 }
-//));
+INSTANTIATE_TEST_CASE_P(EdgeCaseTest, ValidateCoordinatesInputTest,
+	testing::Values(
+		ValidateCoordinatesInputTestCase{ "A0", true },
+		ValidateCoordinatesInputTestCase{ "0A", true },
+		ValidateCoordinatesInputTestCase{ "0a", true },
+		ValidateCoordinatesInputTestCase{ "a0", true },
+		ValidateCoordinatesInputTestCase{ "J9", true },
+		ValidateCoordinatesInputTestCase{ "j9", true },
+		ValidateCoordinatesInputTestCase{ "9J", true },
+		ValidateCoordinatesInputTestCase{ "9j", true }
+));
+
+INSTANTIATE_TEST_CASE_P(InvalidValuesTest, ValidateCoordinatesInputTest,
+	testing::Values(
+		ValidateCoordinatesInputTestCase{ "\a", false },
+		ValidateCoordinatesInputTestCase{ "\\a", false },
+		ValidateCoordinatesInputTestCase{ "/-", false },
+		ValidateCoordinatesInputTestCase{ "-a", false },
+		ValidateCoordinatesInputTestCase{ "??", false },
+		ValidateCoordinatesInputTestCase{ "%*", false },
+		ValidateCoordinatesInputTestCase{ "  ", false },
+		ValidateCoordinatesInputTestCase{ "``", false }
+));

@@ -36,5 +36,6 @@ bool GameHelper::ValidateCoordinatesInput(string coordinates)
 			return false;
 		}
 	}
+	else return false;
 	return true;
 }
