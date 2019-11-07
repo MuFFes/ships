@@ -9,42 +9,19 @@ void Game::start()
 	hasStarted = 0;
 	hasEnded = 0;
 	//setupFields();
-	cout << "Priority: " << priority << endl;
+	
 	string tmp;
 	connection << to_string(priority);
 	connection >> tmp;
 	enemyPriority = stoi(tmp);
-	cout << "Enemy priority: " << enemyPriority << endl;
+
+	draw();
 	while (true)
 	{
-		draw();
 		step();
 	}
 	cout << endl << "END";
 	_getch();
-}
-
-bool Game::validateCoordinatesInput(string coordinates)
-{
-	if (coordinates.length() != 2)
-	{
-		return false;
-	}
-	if (coordinates[0] >= 48 && coordinates[0] <= 57)
-	{
-		if ((coordinates[1] < 65 || coordinates[1] > 74) && (coordinates[1] < 97 || coordinates[1] > 106))
-		{
-			return false;
-		}
-	}
-	else if ((coordinates[0] >= 65 && coordinates[0] <= 74) || (coordinates[0] >= 97 && coordinates[0] <= 106))
-	{
-		if (coordinates[1] < 48 || coordinates[1] > 57)
-		{
-			return false;
-		}
-	}
-	return true;
 }
 
 Game::Game(Connection *connection)
@@ -129,11 +106,11 @@ void Game::setupFields()
 			do
 			{
 				cin >> s;
-				correctData = validateCoordinatesInput(s);
+				correctData = GameHelper::ValidateCoordinatesInput(s);
 			} while (cout << "Enter correct coordinates:" << endl, !correctData);
 			x = s[0];
 			y = s[1];
-			helper.StandardizeCoordinatesInput(&x, &y);
+			GameHelper::StandardizeCoordinatesInput(&x, &y);
 			
 		} while (cout << "Ships cannot overlap and touch each other!" << endl,
 			!myField.AddShip(new Ship(Point(x, y), listOfShips[i], orientation)));
@@ -144,43 +121,19 @@ void Game::setupFields()
 
 void Game::step()
 {
-	string msg;
-	int x;
-	int y;
 	if (priority > enemyPriority)
 	{
-		cout << "Choose a tile to shoot on: ";
-		bool correctData = false;
-		do
-		{
-			cin >> msg;
-			correctData = validateCoordinatesInput(msg);
-			if (correctData)
-			{
-				x = msg[0];
-				y = msg[1];
-				helper.StandardizeCoordinatesInput(&x, &y);
-			}
-			if (enemyField.GetState(Point(x, y)) != '.')
-			{
-				correctData = false;
-				cout << "This tile had already been shot!" << endl;
-			}
-		} while (cout << "Enter correct coordinates:" << endl, !correctData);
-		connection << to_string(x) + to_string(y);
+		GameHelper::Shoot(connection, &enemyField);
+		draw();
+		GameHelper::WaitForShot(connection, &myField);
 	}
-	else
+	else if (priority < enemyPriority)
 	{
-		cout << "Waiting for your enemy to shoot...";
-		connection >> msg;
-		if (msg.length() == 2)
-		{
-			x = msg[0];
-			y = msg[1];
-			myField.Shoot(Point(x, y));
-		}
-		else throw Exception("Error receiving data from connection!");
+		GameHelper::WaitForShot(connection, &myField);
+		draw();
+		GameHelper::Shoot(connection, &enemyField);
 	}
+	else throw Exception("Wrong seed value. Please restart your game.");
 	
 	draw();
 }

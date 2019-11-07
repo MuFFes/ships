@@ -21,8 +21,6 @@ class Game
 		void step();
 		void draw();
 		void start();
-		static bool validateCoordinatesInput(string coordinates);
-		GameHelper helper;
 	public:
 		Game(Connection *connection);
 		void End();
