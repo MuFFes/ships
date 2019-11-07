@@ -24,7 +24,7 @@ void ClientConnection::initializeWinsock()
 
 void ClientConnection::resolveAddress(string ip)
 {
-	char str[22], port[6];
+	char str[22], port[8];
 	strcpy_s(str, ip.c_str());
 	for (int i = 0; i < 30; i++)
 	{

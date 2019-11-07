@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "GameHelperTest.h"
 
+using namespace std;
+
 struct ValidateCoordinatesInputTestCase
 {
 	string str;

@@ -7,9 +7,7 @@
 
 void Game::Start()
 {
-	hasStarted = 0;
-	hasEnded = 0;
-	//setupFields();
+	setupFields();
 	
 	string tmp;
 	connection << to_string(priority);
@@ -133,7 +131,6 @@ void Game::step()
 		shoot();
 	}
 	else throw Exception("Wrong seed value. Please restart your game.");
-	
 	draw();
 }
 
@@ -163,6 +160,9 @@ void Game::shoot()
 		}
 	} while (cout << "Enter correct coordinates:" << endl, !correctData);
 	connection << to_string(x) + to_string(y);
+	string state;
+	connection >> state;
+	enemyField.Shoot(Point(x, y), state);
 }
 
 void Game::waitForShot()
@@ -176,6 +176,7 @@ void Game::waitForShot()
 		int x = msg[0] - 48;
 		int y = msg[1] - 48;
 		myField.Shoot(Point(x, y));
+		connection << to_string(myField.GetState(Point(x, y)));
 	}
 	else throw Exception("Error receiving data from connection!");
 }
