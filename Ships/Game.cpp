@@ -123,17 +123,60 @@ void Game::step()
 {
 	if (priority > enemyPriority)
 	{
-		GameHelper::Shoot(connection, &enemyField);
+		shoot();
 		draw();
-		GameHelper::WaitForShot(connection, &myField);
+		waitForShot();
 	}
 	else if (priority < enemyPriority)
 	{
-		GameHelper::WaitForShot(connection, &myField);
+		waitForShot();
 		draw();
-		GameHelper::Shoot(connection, &enemyField);
+		shoot();
 	}
 	else throw Exception("Wrong seed value. Please restart your game.");
 	
 	draw();
+}
+
+
+void Game::shoot()
+{
+	string msg;
+	int x = -1;
+	int y = -1;
+
+	cout << "Choose a tile to shoot on: ";
+	bool correctData = false;
+	do
+	{
+		cin >> msg;
+		correctData = GameHelper::ValidateCoordinatesInput(msg);
+		if (correctData)
+		{
+			x = msg[0];
+			y = msg[1];
+			GameHelper::StandardizeCoordinatesInput(&x, &y);
+		}
+		if (enemyField.GetState(Point(x, y)) != '.')
+		{
+			correctData = false;
+			cout << "This tile had already been shot!" << endl;
+		}
+	} while (cout << "Enter correct coordinates:" << endl, !correctData);
+	connection << to_string(x) + to_string(y);
+}
+
+void Game::waitForShot()
+{
+	string msg;
+
+	cout << "Waiting for your enemy to shoot...";
+	connection >> msg;
+	if (msg.length() == 2)
+	{
+		int x = msg[0] - 48;
+		int y = msg[1] - 48;
+		myField.Shoot(Point(x, y));
+	}
+	else throw Exception("Error receiving data from connection!");
 }

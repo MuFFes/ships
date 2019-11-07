@@ -16,6 +16,8 @@ class Game
 		Connection* connection = NULL;
 		Field myField;
 		Field enemyField;
+		void shoot();
+		void waitForShot();
 		void clearFields();
 		void setupFields();
 		void step();

@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="test.cpp" />
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="StandardizeCoordinatesInputTest.cpp">
+      <Filter>GameHelperTest</Filter>
+    </ClCompile>
+    <ClCompile Include="ValidateCoordinatesInputTest.cpp">
+      <Filter>GameHelperTest</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="GameHelperTest.h">
+      <Filter>GameHelperTest</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="GameHelperTest">
+      <UniqueIdentifier>{eac34bd0-b880-4dc3-8345-92a97657df52}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
