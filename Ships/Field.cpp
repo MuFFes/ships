@@ -37,7 +37,7 @@ void Field::RemoveShip(Ship& ship)
 	ships.remove(ship);
 }
 
-Ship Field::FindShip(Point point)
+Ship* Field::FindShip(Point point)
 {
 	for (list<Ship>::iterator i = ships.begin(); i != ships.end(); ++i)
 	{
@@ -45,9 +45,10 @@ Ship Field::FindShip(Point point)
 		for (list<Point>::iterator j = s.Tiles.begin(); j != s.Tiles.end(); ++j)
 		{
 			if (j->x == point.x && j->y == point.y)
-				return s;
+				return &s;
 		}
 	}
+	return nullptr;
 }
 
 void Field::Shoot(Point point)
@@ -66,6 +67,10 @@ void Field::Shoot(Point point, const string state)
 {
 	if (state == "42")
 	{
+		if (FindShip(point) != nullptr)
+		{
+			
+		}
 		hitShots.push_back(point);
 	}
 	else

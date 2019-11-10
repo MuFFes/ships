@@ -17,7 +17,7 @@ class Field
 		int GetNumberOfShips();
 		bool AddShip(Ship* ship);
 		void RemoveShip(Ship& ship);
-		Ship FindShip(Point point);
+		Ship* FindShip(Point point);
 		void Shoot(Point point);
 		void Shoot(Point point, string state);
 		char GetState(Point point);
