@@ -176,7 +176,15 @@ void Game::waitForShot()
 		int x = msg[0] - 48;
 		int y = msg[1] - 48;
 		myField.Shoot(Point(x, y));
-		connection << to_string(myField.GetState(Point(x, y)));
+		Ship* s = myField.FindShip(Point(x, y));
+		string state = "o";
+		if (s != nullptr)
+		{
+			if (myField.GetNumberOfShipRemainingTiles(s) == 0)
+				state = "D";
+			else state = "*";
+		}
+		connection << state;
 	}
 	else throw Exception("Error receiving data from connection!");
 }
