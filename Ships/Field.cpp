@@ -51,6 +51,20 @@ int Field::GetNumberOfShipRemainingTiles(Ship* ship)
 	return ship->Tiles.size() - number;
 }
 
+int Field::GetNumberOfRemainingTiles()
+{
+	int number = 0;
+	for (int i = 0; i < 10; i++)
+	{
+		for (int j = 0; j < 10; j++)
+		{
+			if (GetState(Point(i, j)) == 'X')
+				number++;
+		}
+	}
+	return number;
+}
+
 
 Ship* Field::FindShip(Point point)
 {

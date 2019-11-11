@@ -18,6 +18,7 @@ class Field
 		bool AddShip(Ship* ship);
 		void RemoveShip(Ship& ship);
 		int GetNumberOfShipRemainingTiles(Ship* ship);
+		int GetNumberOfRemainingTiles();
 		Ship* FindShip(Point point);
 		void Shoot(Point point);
 		void Shoot(Point point, string state);
