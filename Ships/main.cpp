@@ -31,6 +31,7 @@ int main()
 				connection = new ServerConnection();
 				cout << "Enter port to establish connection: ";
 				cin >> ip;
+				cout << "Server started";
 			}
 			else if (c == 'j' || c == 'J')
 			{

@@ -15,11 +15,12 @@ void Game::Start()
 	enemyPriority = stoi(tmp);
 
 	draw();
-	while (true)
+	while (!hasEnded)
 	{
 		step();
 	}
 	cout << endl << "END";
+	cout << endl << isWinner ? "You Won!" : "You Lost!";
 	_getch();
 }
 
@@ -32,6 +33,11 @@ Game::Game(Connection *connection)
 	uniform_int_distribution<int> dis(0, INT_MAX);
 	
 	this->priority = dis(gen);
+}
+
+void Game::End()
+{
+	cout << "END!";
 }
 
 void Game::draw()
@@ -163,6 +169,12 @@ void Game::shoot()
 	string state;
 	connection >> state;
 	enemyField.Shoot(Point(x, y), state);
+	connection >> state;
+	if (state == "end")
+	{
+		hasEnded = true;
+		isWinner = true;
+	}
 }
 
 void Game::waitForShot()
@@ -183,8 +195,15 @@ void Game::waitForShot()
 			if (myField.GetNumberOfShipRemainingTiles(s) == 0)
 				state = "D";
 			else state = "*";
+
 		}
 		connection << state;
+		connection << string((myField.GetNumberOfRemainingTiles() > 0) ? "continue" : "end");
+		if (myField.GetNumberOfRemainingTiles() == 0)
+		{
+			hasEnded = true;
+			isWinner = false;
+		}
 	}
 	else throw Exception("Error receiving data from connection!");
 }
