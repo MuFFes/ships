@@ -5,11 +5,11 @@
 class Game
 {
 	private:
-		int priority;
-		int enemyPriority;
+		int priority = 0;
+		int enemyPriority = 0;
 		int hasEnded = 0;
 		int isWinner = 0;
-		int listOfShips[1] = { 4 };//{4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
+		int listOfShips[10] = { 4, 3, 3, 2, 2, 2, 1, 1, 1, 1 };
 		Connection* connection = NULL;
 		Field myField;
 		Field enemyField;
@@ -18,9 +18,9 @@ class Game
 		void setupFields();
 		void step();
 		void draw();
+		void end();
 	public:
 		Game(Connection *connection);
-		void End();
 		void Start();
 		~Game();
 };

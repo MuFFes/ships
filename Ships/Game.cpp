@@ -19,9 +19,7 @@ void Game::Start()
 	{
 		step();
 	}
-	cout << endl << "END";
-	cout << endl << isWinner ? "You Won!" : "You Lost!";
-	_getch();
+	end();
 }
 
 Game::Game(Connection *connection)
@@ -35,9 +33,11 @@ Game::Game(Connection *connection)
 	this->priority = dis(gen);
 }
 
-void Game::End()
+void Game::end()
 {
-	cout << "END!";
+	cout << endl << "END";
+	cout << endl << ((isWinner) ? "You Won!" : "You Lost!");
+	_getch();
 }
 
 void Game::draw()
@@ -73,6 +73,7 @@ void Game::draw()
 Game::~Game()
 {
 	connection->Close();
+	delete connection;
 }
 
 void Game::setupFields()
@@ -127,14 +128,20 @@ void Game::step()
 	if (priority > enemyPriority)
 	{
 		shoot();
-		draw();
-		waitForShot();
+		if (!hasEnded)
+		{
+			draw();
+			waitForShot();
+		}
 	}
 	else if (priority < enemyPriority)
 	{
 		waitForShot();
-		draw();
-		shoot();
+		if (!hasEnded)
+		{
+			draw();
+			shoot();			
+		}
 	}
 	else throw Exception("Wrong seed value. Please restart your game.");
 	draw();

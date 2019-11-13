@@ -44,6 +44,7 @@ int main()
 			cout << "Connected!" << endl;
 			game = new Game(connection);
 			game->Start();
+			delete game;
 		}
 		catch (Exception &ex)
 		{

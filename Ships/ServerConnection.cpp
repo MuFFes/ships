@@ -99,3 +99,12 @@ void ServerConnection::Close()
 	WSACleanup();
 	isOpen = false;
 }
+
+ServerConnection::~ServerConnection()
+{
+	if (isOpen)
+	{
+		Close();
+	}
+	delete result;
+}

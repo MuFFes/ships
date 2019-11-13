@@ -19,7 +19,7 @@ class Connection
 	public:
 		virtual void Open(string ip) = 0;
 		virtual void Close() = 0;
-
+		virtual ~Connection() = default;
 		friend void operator>>(Connection* const& connection, string& msg);
 		friend void operator<<(Connection* const& connection, const string& msg);
 };

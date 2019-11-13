@@ -20,4 +20,5 @@ class ServerConnection : public Connection
 	public:
 		void Open(string ip);
 		void Close();
+		virtual ~ServerConnection();
 };

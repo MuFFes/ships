@@ -89,3 +89,12 @@ void ClientConnection::Close()
 	closesocket(connectionSocket);
 	WSACleanup();
 }
+
+ClientConnection::~ClientConnection()
+{
+	if (isOpen)
+	{
+		Close();
+	}
+	delete result;
+}
