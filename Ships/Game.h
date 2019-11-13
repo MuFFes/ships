@@ -5,12 +5,14 @@
 class Game
 {
 	private:
+		Game(Game& game) = default;
+		Game& operator=(Game& game) = default;
 		int priority = 0;
 		int enemyPriority = 0;
 		int hasEnded = 0;
 		int isWinner = 0;
 		int listOfShips[10] = { 4, 3, 3, 2, 2, 2, 1, 1, 1, 1 };
-		Connection* connection = NULL;
+		Connection* connection = nullptr;
 		Field myField;
 		Field enemyField;
 		void shoot();

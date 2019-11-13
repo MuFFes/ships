@@ -9,7 +9,7 @@ class ServerConnection : public Connection
 	private:
 		SOCKET listenSocket = INVALID_SOCKET;
 		addrinfo hints;
-		addrinfo* result = NULL;
+		addrinfo* result = nullptr;
 
 		void initializeWinsock();
 		void resolveAddress(string port);
@@ -18,7 +18,7 @@ class ServerConnection : public Connection
 		void acceptClientSocket();
 		void closeListenSocket();
 	public:
-		void Open(string ip);
-		void Close();
+		void Open(string ip) override;
+		void Close() override;
 		virtual ~ServerConnection();
 };

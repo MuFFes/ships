@@ -9,6 +9,6 @@ class Exception: public exception
 	private:
 		string message;
 	public:
-		Exception(const string& message);
-		virtual const string what();
+		Exception(string message);
+		virtual string what();
 };

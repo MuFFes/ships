@@ -22,7 +22,7 @@ void ClientConnection::initializeWinsock()
 	hints.ai_protocol = IPPROTO_TCP;
 }
 
-void ClientConnection::resolveAddress(string ip)
+void ClientConnection::resolveAddress(const string ip)
 {
 	char str[22], port[8];
 	strcpy_s(str, ip.c_str());
@@ -42,7 +42,7 @@ void ClientConnection::resolveAddress(string ip)
 	}
 }
 
-void ClientConnection::establishConnection(string ip)
+void ClientConnection::establishConnection(const string ip)
 {
 	for (addrinfo* ptr = result; ptr != NULL; ptr = ptr->ai_next)
 	{
@@ -94,7 +94,7 @@ ClientConnection::~ClientConnection()
 {
 	if (isOpen)
 	{
-		Close();
+		ClientConnection::Close();
 	}
 	delete result;
 }

@@ -1,10 +1,5 @@
 #include "Field.h"
 
-Field::Field()
-{
-
-}
-
 int Field::GetNumberOfShips()
 {
 	return ships.size();

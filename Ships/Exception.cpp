@@ -1,8 +1,9 @@
 #include "Exception.h"
+#include <utility>
 
-Exception::Exception(const string& message) : message(message) {};
+Exception::Exception(string message) : message(std::move(message)) {};
 
-const string Exception::what()
+string Exception::what()
 {
 	return message;
 }

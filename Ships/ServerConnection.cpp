@@ -29,7 +29,7 @@ void ServerConnection::initializeWinsock()
 	hints.ai_flags = AI_PASSIVE;
 }
 
-void ServerConnection::resolveAddress(string port)
+void ServerConnection::resolveAddress(const string port)
 {
 	char str[7];
 	strcpy_s(str, port.c_str());  
@@ -104,7 +104,7 @@ ServerConnection::~ServerConnection()
 {
 	if (isOpen)
 	{
-		Close();
+		ServerConnection::Close();
 	}
 	delete result;
 }

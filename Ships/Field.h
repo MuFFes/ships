@@ -13,7 +13,6 @@ class Field
 		list<Point> hitShots;
 		list<Ship> ships;
 	public:
-		Field();
 		int GetNumberOfShips();
 		bool AddShip(Ship* ship);
 		void RemoveShip(Ship& ship);

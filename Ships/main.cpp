@@ -15,8 +15,8 @@ int main()
 	{
 		try
 		{
-			Game* game = NULL;
-			Connection* connection = NULL;
+			Game* game = nullptr;
+			Connection* connection = nullptr;
 			string ip;
 			char c;
 			cout << "Press 'S' to start a server, or 'J' to join existing one!" << endl;
